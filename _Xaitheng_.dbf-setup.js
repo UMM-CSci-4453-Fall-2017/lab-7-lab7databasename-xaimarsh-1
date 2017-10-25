@@ -1,29 +1,31 @@
 var credentials = require('./credentials.json');
 
 var mysql = require("mysql");
-
 var Promise = require('bluebird');
 var using = Promise.using;
 Promise.promisifyAll(require("mysql/lib/Connection").prototype);
 Promise.promisifyAll(require("mysql/lib/Pool").prototype);
 
 credentials.host="ids";
+var connection = mysql.createConnection(credentials);
 
-var pool = mysql.createPool(credentials); //set up the pool w/my credentials
+var pool=mysql.createPool(credentials); //Setup the pool using our credentials.
 
-var getConnection=function() {
+var getConnection=function(){
 	return pool.getConnectionAsync().disposer(
 		function(connection){return connection.release();}
 	);
 };
 
-var query = function(command){
-	return using(getConnection(), function(connection) {
+var query = function(command){ //input SQL and return promise
+	return using(getConnection(),function(connection){
 		return connection.queryAsync(command);
 	});
 };
 
-sql = "SHOW DATABASES";
+var endPool=function(){
+	pool.end(function(err){});
+}
 
-var result = query(mysql.format(sql)); //result is promise
-result.then(function(dbfs, err){console.log(dbfs)}).then(function(){pool.end()});
+exports.query = query;
+exports.releaseDBF=endPool;

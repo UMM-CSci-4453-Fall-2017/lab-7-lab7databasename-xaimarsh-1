@@ -40,7 +40,7 @@ function processDBFs(dbfs) { //Asynchronous row handler
 }
 
 function processTables(tables, dbf) { //Asynconous row handler
-	data[dbf] = tables.legnth; //Now it is set.
+	data[dbf] = tables.length; //Now it is set.
 	processed[dbf] = 0; //And has not yet been used as a label.
 	for(var index in tables) {
 		var tableObj = tables[index];
@@ -71,7 +71,7 @@ function processDescription(desc, table, dbf) {
   	desc.map(function(field){ // show the fields nicely
      		console.log("\tFieldName: `"+field.Field+"` \t("+field.Type+")");
  	 });
-
+	
  	 if(allZero(data)){connection.end()}
 }
 

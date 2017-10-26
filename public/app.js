@@ -1,3 +1,5 @@
+var app = angular.module('MyTutorialApp', []);
+
 var express = require('express');
 app = express(),
 port = process.env.PORT || 1337;
